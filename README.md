@@ -18,7 +18,7 @@ The goal of this project is to create a career services platform where students 
 ## Team Members and Roles
 | S. No. | Resource Name | GitHub Username | Role | Responsibilities |
 |--------|:-------------:|:---------------:|:----:|:-----------------|
-| 1. | Shefali Upadhyaya | Shefali-Upadhyaya | Scrum Master | 1. Lead the team Sprint planning <br> 2. Monitoring progress and feedback <br> 3. Organizing meetings <br> 4. Scrum Board administration <br> 5. Project documentation <br> 6. Communication and Collaboration |
+| 1. | Shefali Upadhyaya | Shefali-Upadhyaya | Team Lead | 1. Lead the Team Sprint planning <br> 2. Monitoring progress and feedback <br> 3. Organizing meetings <br> 4. Scrum Board administration <br> 5. Project documentation <br> 6. Communication and Collaboration |
 | 2. | Iona Thomas | ionathomas | Software Architect | 1. System design <br> 2. Technology selection <br> 3. Design patterns <br> 4. Application of best practices <br> 5. Project & Technical documentation <br> 6. Communication and Collaboration |
 | 3. | Hani Saravanan  | hannaa12 | Front-End Developer | 1. Web development <br> 2. User Interface implementation <br> 3. Responsive design <br> 4. Testing and Debugging <br> 5. Version Control <br> 6. Communication and Collaboration |
 | 4. | Ashu Kumar | kin-kins | Back-End Developer | 1. Database management <br> 2. Integration <br> 3. Security and Authentication <br> 4. Testing and Debugging  Version Control <br> 5. Communication and Collaboration                                     |
