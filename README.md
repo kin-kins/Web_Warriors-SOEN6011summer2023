@@ -45,10 +45,15 @@ The project will last 4 weeks, and the development process will be an adapted ve
 ### Sprint 4 (August 1, 2023 – August 9, 2023) tentative schedule: TBA
 
 ## Project Technologies
-Programming Language - Python 3.9
-Containerization tool - Docker 
-Framework -Flask
-Database - AWS RDS Mysql
-IDE - VS Code, Pycharm
-Restful API 
-Python Packages  - pymysql, hashlib, flask
+![Technology Overview](https://github.com/kin-kins/Web_Warriors-SOEN6011summer2023/blob/main/Sprint%201/arch%20overview.png)
+
+- **Programming Language:** Python 3.9
+- **Containerization tool:** Docker
+- **Framework:** Flask
+- **Database:** AWS RDS MySQL
+- **IDE:** VS Code, PyCharm
+- **Restful API**
+- **Python Packages:**
+  - pymysql
+  - hashlib
+  - flask
