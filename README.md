@@ -1,5 +1,5 @@
 # SOEN 6011 - Web Warriors 
-## Project Description 
+## Problem Statement 
 
 Career service applications are digital platforms that help people manage their careers by facilitating career-related tasks and providing resources and support. These programs can be accessed via computers, laptops, or mobile devices, making the services convenient and accessible. Some of the common features of career services applications include: 
 
