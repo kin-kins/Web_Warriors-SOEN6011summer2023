@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Upload Resume | {{session.username}}{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+	<div class="col s12">
+		<h2>Upload Resume</h2>
+		<embed src="/docs/{{session.username}}" width="500" height="375">
+		<p class="text-align">
+			UPLOAD / REPLACE RESUME
+		</p>
+		{% if success %}
+			<h5 style="color:blueviolet">{{ success }}</h5>
+		{% endif %}
+		<form method="post" enctype="multipart/form-data" action="/upload">
+			<br>
+			<input type="file" name="pdf-file" class="bg-warning" style="padding:10px" required>
+		
+			<h6 class="text-success">{{ msg_name }}</h6>
+			<br><br>
+			<input type="submit" name="submit" value="UPLOAD" class="btn btn-outline-warning">
+		</form>
+	</div>
+</div>
+
+{% endblock %}
