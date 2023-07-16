@@ -1,0 +1,6 @@
+setuptools~=58.0.4
+PyMySQL~=1.0.3
+Flask~=2.2.2
+WTForms~=3.0.1
+flask_wtf==1.1.1
+stripe
