@@ -1,4 +1,3 @@
-from src.flight import Flight
 from flask import Flask, flash, render_template, request, redirect, session, url_for
 from flask_wtf import Form
 import hashlib
@@ -27,55 +26,7 @@ dbOb= Database()
 #                          SQL Queries                              #
 #####################################################################
 
-def get_attractions_data():
 
-	cursor = db.cursor()
-	cursor.execute("select * from activities;")
-	attractions = [dict(name=row[1], description=row[2], address=row[3],price=row[4]) for row in cursor.fetchall()]
-	return attractions
-
-def view_completed_attractions_query():
-	 return "select activity_date, attraction.attraction_name, description from activity natural join attraction where activity.username = '" + session['username'] + "' and ((activity_date = CURDATE() and activity_end_time <= CURTIME()) or activity_date < CURDATE());"
-
-def get_trip_cost():
-	return "select sum(cost) from activity join trip using (trip_id) where trip_id = " + str(session['current_trip_id']) + ";"
-
-def get_all_activities_in_a_trip():
-	return "select activity_date, activity_name, cost, activity_start_time, activity_end_time, activity_id from activity natural join trip where username = '" + session['username'] + "' and is_booked = false;";
-
-def get_current_trip_id():
-	return "select trip_id from trip natural join user where trip.is_booked=false and user.username='" + session['username'] + "';"
-
-def add_attraction_to_trip(attraction_name, activity_name, start_time, end_time, date, cost):
-	return "insert into activity (activity_name, activity_start_time, activity_end_time, activity_date, attraction_name, username, trip_id, cost) values ('" + activity_name + "', '" + start_time + "', '" + end_time + "', '" + date + "', '" + attraction_name + "', '" + session['username'] + "', " + str(session['current_trip_id']) + ", " + str(cost) + ");"
-
-
-def create_trip(no_error):
-
-	# Query database when user is admin for admin panel
-	if session['is_admin']:
-
-		# Get user table information.
-		db = Database().db
-		cursor = db.cursor()
-		cursor.execute("select * from user;")
-		users = [dict(is_admin="Yes" if row[3] == 1 else "No", username=row[0], password=row[1], first_name=row[4], last_name=row[5], email=row[2], suspended="Yes" if row[7] == 1 else "No") for row in cursor.fetchall()]
-
-		# Get attraction table information.
-		attractions = get_attractions_data()
-
-		if no_error:
-			return render_template("home.html", session=session, users=users, attractions=attractions, no_trip="")
-		else:
-			return render_template("home.html", session=session, users=users, attractions=attractions, no_trip_error="You must first create a new trip!")
-
-	# Not an admin
-	if no_error:
-		if 'current_trip_id' not in session or not session['current_trip_id']:
-			return render_template("home.html", session=session, no_trip="Here, you can start making a new trip!")
-		return render_template("home.html", session=session)
-	else:
-		return render_template("home.html", session=session, no_trip_error="You must first create a new trip!")
 
 
 
