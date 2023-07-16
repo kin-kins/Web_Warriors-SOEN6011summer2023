@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block title %}My Trip | {{session.username}}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col s12">
+		<h2>Welcome, {{session.name}}.</h2>
+		<p class="text-align">
+			Here are your older bookings .
+		</p>
+		<h4 class="center-align">Booking History</h4>
+		<table class="responsive-table centered">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Number</th>
+					<th>Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in items %}
+				<tr>
+					<td>{{ item.name }}</td>
+					<td>{{ item.number }}</td>
+					<td>{{ item.price }}</td>
+					<!-- <td><a class="waves-effect waves-light btn" href="/remove-from-trip/{{ item.id }}">Remove</a></td> -->
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		
+		<h4 class="center-align">Packages History</h4>
+		<table>
+			<thead>
+				<tr>
+					<th>Trip ID</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+					<th>Username</th>
+					<th>Items</th>
+				</tr>
+			</thead>
+			{% for booking in package_bookings %}
+				<tr>
+					<td>{{ booking.trip_id }}</td>
+					<td>{{ booking.trip_start_date }}</td>
+					<td>{{ booking.trip_end_date }}</td>
+					<td>{{ booking.customer_username }}</td>
+					<td>{{ booking.itenary }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+{% endblock %}
