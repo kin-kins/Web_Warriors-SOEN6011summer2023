@@ -1,11 +1,10 @@
-from src.flight import Flight
 from flask import Flask, flash, render_template, request, redirect, session, url_for, Blueprint
 import os
 from src.database import Database
 from flask import make_response,send_from_directory, send_file, current_app as app
 resume_blueprint = Blueprint('resume_blueprint', __name__ )
 #####################################################################
-#                             Resume                               #
+#                             Flights                               #
 #####################################################################
 def get_trip_cost():
 	return "select sum(price) from trip_common  where username=\"" + (session['username']) + "\"and is_booked = false;"
@@ -38,8 +37,7 @@ def upload_file():
         if pdf_file and allowed_file(pdf_file.filename):
             filename = session['username']+".pdf"
             pdf_file.save(os.path.join(UPLOAD_FOLDER , filename))
-        # return redirect(url_for('/flights'))
-    return render_template('flights.html')
+    return render_template('resume.html')
 
 @resume_blueprint.route('/docs/<id>')
 def show_pdf(id=None):
