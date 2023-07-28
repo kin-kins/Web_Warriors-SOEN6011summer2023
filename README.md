@@ -40,7 +40,11 @@ The project will last 4 weeks, and the development process will be an adapted ve
 |:----------------:|:------------:|:------------:|:------------:|:------------:|:------------:|:-------------:|:-------------:|:-------------:|
 | | Review Project Description | Scrum Meeting 1 - Online | Working on assigned tasks | Working on assigned tasks | Scrum Meeting 2 - In-Person | Working on assigned tasks | Working on assigned tasks | Finishing touches and submission of Sprint 1 |
 
-### Sprint 2 (July 13, 2023 – July 19, 2023) schedule: TBA
+### Sprint 2 (July 13, 2023 – July 19, 2023) schedule:
+
+| Sprint 2 / Dates | July 13, 2023 | July 14, 2023 | July 15, 2023 | July 16, 2023 | July 17, 2023 | July 18, 2023 | July 19, 2023 |
+|:----------------:|:------------:|:------------:|:------------:|:------------:|:------------:|:-------------:|:-------------:|
+| | Review Sprint 2 Guidelines and Rubrics | Scrum Meeting 1 - Online | Working on assigned tasks | Scrum Meeting 2 - In-Person | Working on assigned tasks | Working on assigned tasks | Finishing touches and submission of Sprint 2 |
 ### Sprint 3 (July 20, 2023 – July 31, 2023) schedule: TBA
 ### Sprint 4 (August 1, 2023 – August 9, 2023) schedule: TBA
 
