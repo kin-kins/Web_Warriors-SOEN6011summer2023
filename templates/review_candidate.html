@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}Activities | {{session.username}}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col s12">
+		<h2>Viewing Job ID {{jobid}}</h2>
+		<p class="text-align">
+			Choose your Job
+		</p>
+		{% if success %}
+			<h5 style="color:green">{{ success }}</h5>
+		{% endif %}
+		<h4 class="center-align">Candidate List</h4>
+		{% if session.is_admin == 2 %}
+		<table class="responsive-table centered">
+			<thead>
+				<tr>
+					<th>Candidate Name</th>
+					<th>Job Description</th>
+					<th>Review</th>
+					<th>Approve</th>
+					<th>Decline</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in items %}
+				<tr>
+					<td>{{ item.username }}</td>
+					<td>{{ item.description }}</td>
+					<form action="/review-candidate/{{ item.username }}" method="POST">
+					<td><button class="btn waves-effect waves-light" type="submit" name="action"><i class="material-icons">play_arrow</i></td>
+					<input type="hidden" name="is_reserved" value="{% if item.timeslots %}1{% else %}0{% endif %}">
+					</form>
+					<form action="/delete-jobs/{{ item.jobid }}" method="POST">
+						<td><button class="btn waves-effect waves-light" type="submit" name="action"><i class="material-icons ">check</i></td>
+						<input type="hidden" name="is_reserved" value="{% if item.timeslots %}1{% else %}0{% endif %}">
+						</form>
+		
+					<form action="/delete-jobs/{{ item.jobid }}" method="POST">
+						<td><button class="btn waves-effect waves-light" type="submit" name="action"><i class="material-icons large red-text">close</i></td>
+						<input type="hidden" name="is_reserved" value="{% if item.timeslots %}1{% else %}0{% endif %}">
+						</form>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
+
+	</div>
+</div>
+{% endblock %}
