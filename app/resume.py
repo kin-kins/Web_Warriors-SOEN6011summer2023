@@ -45,14 +45,6 @@ def show_pdf(id=None):
     if id is not None:
         binary_pdf = UPLOAD_FOLDER+"/"+id+".pdf"
         return send_from_directory(UPLOAD_FOLDER, id+".pdf")
-        # return redirect(binary_pdf)
-        # with open(binary_pdf, 'rb') as static_file:
-        #       return send_file(static_file, session['username']+".pdf")
-        print(binary_pdf)
-        response = make_response(binary_pdf)
-        response.headers['Content-Type'] = 'application/pdf'
-        response.headers['Content-Disposition'] = 'inline; filename=%s' % binary_pdf
-        return response
 		
 db = Database().db
 
