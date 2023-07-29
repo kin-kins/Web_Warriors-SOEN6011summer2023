@@ -120,6 +120,37 @@ def make_admin(username):
 	return redirect(url_for('home'))
 
 
+
+@app.route('/review-candidate/<jp_id>/<jp_username>', methods=['POST'])
+def review_candidate(jp_id,jp_username):
+	db = Database().db
+	cursor = db.cursor()
+	print("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
+	cursor.execute("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	return render_template('resume.html',username=jp_username, session=session)
+
+
+@app.route('/approve-candidate/<jp_id>/<jp_username>/<jobid>', methods=['POST'])
+def approve_candidate(jp_id,jp_username,jobid):
+	db = Database().db
+	cursor = db.cursor()
+	cursor.execute("update job_applied set status='Approved' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	return redirect('/review-jobs/'+jobid, code=307)
+
+
+
+@app.route('/decline-candidate/<jp_id>/<jp_username>/<jobid>', methods=['POST'])
+def decline_candidate(jp_id,jp_username,jobid):
+	db = Database().db
+	cursor = db.cursor()
+	cursor.execute("update job_applied set status='Declined' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	return redirect('/review-jobs/'+jobid, code=307)
+
+
+
 #####################################################################
 #                         MAIN APPLICATION                          #
 #####################################################################
