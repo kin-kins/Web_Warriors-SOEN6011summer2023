@@ -1,6 +1,6 @@
 class Customer:
 
-    def __init__(self,name, password1,password2, email, firstname, lastname, street, city, state, country, zipcode):
+    def __init__(self,name, password1,password2, email, firstname, lastname, street, city, state, country, zipcode,admin):
         self.name=name
         self.password1=password1
         self.password2=password2
@@ -13,6 +13,7 @@ class Customer:
         self.state=state
         self.country=country
         self.zipcode=zipcode
+        self.admin = admin
 
     def validate_data(self):
         if self.name == '' or self.password1 == '' or self.password2 == '' or self.firstname == '' or self.firstname == '' or self.lastname == '' or self.email == '' or self.street == '' or self.city == '' or self.state == '' or self.country == '' or self.zipcode == '':
@@ -58,7 +59,8 @@ class Customer:
         insert_address_query = ("insert into address (street_no, street_name, city, state, country, zip) values ("
 			+ self.street_no + ", '" + self.street + "', '" + self.city + "', '" + self.state + "', '" + self.country + "', '" + self.zipcode + "');")
         insert_username_query = ("insert into user (username, password, email, is_admin, first_name, last_name, address_id, suspended) values ('"
-	        + self.name + "', '" + self.password1 + "', '" + self.email + "', false, '" + self.firstname + "', '" + self.lastname + "', (select max(address_id) from address), 0);")
+	        + self.name + "', '" + self.password1 + "', '" + self.email + "', '" + self.admin+ "', '" +self.firstname + "', '" + self.lastname + "', (select max(address_id) from address), 0);")
+        print(insert_username_query)
         return insert_address_query, insert_username_query
 	
     def update(self, address_id):
