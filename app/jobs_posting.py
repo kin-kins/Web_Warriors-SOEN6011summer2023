@@ -76,15 +76,38 @@ def review_jobs(jp_index):
 	cursor = db.cursor()
 	cursor.execute("select * from job_applied where job_id= " + jp_index + ";")
 	db.commit()
-	jp = [dict(id = row[1], name=row[2], description=row[3],address= row[4],salary=row[5],username= row[6]) for row in cursor.fetchall()] # TODO: Correctly map activity info.
+	jp = [dict(keyid=row[0],id = row[1], name=row[2], description=row[3],address= row[4],salary=row[5],username= row[6],status=row[7]) for row in cursor.fetchall()] # TODO: Correctly map activity info.
 	
 	return render_template('review_candidate.html',items=jp,jobid=jp_index, session=session)
 
 
-@job_blueprint.route('/review-candidate/<jp_username>', methods=['POST'])
-def review_candidate(jp_username):
+@job_blueprint.route('/review-candidate/<jp_id>/<jp_username>', methods=['POST'])
+def review_candidate(jp_id,jp_username):
+	db = Database().db
+	cursor = db.cursor()
+	print("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
+	cursor.execute("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
+	db.commit()
 	return render_template('resume.html',username=jp_username, session=session)
 
+
+@job_blueprint.route('/approve-candidate/<jp_id>/<jp_username>/<jobid>', methods=['POST'])
+def approve_candidate(jp_id,jp_username,jobid):
+	db = Database().db
+	cursor = db.cursor()
+	cursor.execute("update job_applied set status='Approved' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	return redirect('/review-jobs/'+jobid, code=307)
+
+
+
+@job_blueprint.route('/decline-candidate/<jp_id>/<jp_username>/<jobid>', methods=['POST'])
+def decline_candidate(jp_id,jp_username,jobid):
+	db = Database().db
+	cursor = db.cursor()
+	cursor.execute("update job_applied set status='Declined' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	return redirect('/review-jobs/'+jobid, code=307)
 
 
 @job_blueprint.route('/add-activity', methods=['GET'])
