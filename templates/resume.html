@@ -5,6 +5,7 @@
 
 
 <div class="row">
+	{% if session.is_admin == 0 %}
 	<div class="col s12">
 		<h2>Upload Resume</h2>
 		<embed src="/docs/{{session.username}}" width="500" height="375">
@@ -23,6 +24,14 @@
 			<input type="submit" name="submit" value="UPLOAD" class="btn btn-outline-warning">
 		</form>
 	</div>
+	{% endif %}
+
+	{% if session.is_admin == 2 %}
+	<div class="col s12">
+		<h2>Candidate Resume</h2>
+		<embed src="/docs/{{username}}" width="500" height="375">
+	{% endif %}
 </div>
+
 
 {% endblock %}

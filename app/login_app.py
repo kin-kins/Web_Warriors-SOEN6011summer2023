@@ -40,9 +40,10 @@ def verify_credentials():
 	db = Database().db
 	cursor = db.cursor()
 	cursor.execute("select * from user where username = '" + name + "' and password = '" + password + "';")
+
 	rows = cursor.fetchall()
 	error = None
-
+	print(rows)
 	if rows:
 		# User found
 		if rows[0][7] != 1:
@@ -95,7 +96,14 @@ def register():
 	state=request.form['register_state']
 	country=request.form['register_country']
 	zipcode=request.form['register_zip']
-	customer_ob = Customer(name, password1,password2, email, firstname, lastname, street, city, state, country, zipcode)
+	print(request.form)
+	employer=request.form['employer']
+	if employer =='Y' or employer == "y":
+		admin=2
+	else:
+		admin=0
+	# admin=0
+	customer_ob = Customer(name, password1,password2, email, firstname, lastname, street, city, state, country, zipcode, str(admin))
 
 	error = customer_ob.validate_data()
 	if error != 0:
@@ -142,7 +150,7 @@ async def update_user():
 	state=request.form['register_state']
 	country=request.form['register_country']
 	zipcode=request.form['register_zip']
-	customer_ob = Customer(name, "","", email, firstname, lastname, street, city, state, country, zipcode)
+	customer_ob = Customer(name, "","", email, firstname, lastname, street, city, state, country, zipcode,session["is_admin"])
 
 	# Get Address ID
 	db = Database().db
