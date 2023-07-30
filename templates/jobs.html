@@ -43,6 +43,7 @@
 			</tbody>
 		</table>
 		{% endif %}
+
 		{% if session.is_admin == 1 %}
 		<table class="responsive-table centered">
 			<thead>
@@ -78,6 +79,7 @@
 			</tbody>
 		</table>
 		{% endif %}
+
 		{% if session.is_admin == 2 %}
 		<table class="responsive-table centered">
 			<thead>
@@ -114,7 +116,6 @@
 		</table>
 		{% endif %}
 		{% if session.is_admin == 2 %}
-
 			<form action="/add-activity" method = "get"style="
 				display: flex;
 				align-items: center;

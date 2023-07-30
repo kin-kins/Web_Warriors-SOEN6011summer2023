@@ -110,8 +110,6 @@ def decline_candidate(jp_id,jp_username,jobid):
 	return redirect('/review-jobs/'+jobid, code=307)
 
 
-
-
 @job_blueprint.route('/add-activity', methods=['GET'])
 def add_activityt():
 	return render_template('add_activity.html')
