@@ -69,5 +69,5 @@ The system will be deployed on an AWS EC2 instance or localhost. The database fo
 - **Database:** AWS RDS MySQL
 - **IDE:** VS Code, PyCharm
 - **Version Control:** Github CLI, Github Desktop
-- **Testing Framework:** To be decided
+- **Testing Framework:** Pytest, unittest
 - **Restful API**
