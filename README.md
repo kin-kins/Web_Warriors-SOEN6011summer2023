@@ -52,7 +52,11 @@ The project will last 4 weeks, and the development process will be an adapted ve
 |:----------------:|:------------:|:------------:|:------------:|:------------:|:------------:|:-------------:|:------------:|:------------:|:------------:|:------------:|:-------------:|
 | | Review Sprint 3 Guidelines and Rubrics, Scrum Meeting 1 - Online | Working on assigned tasks | Scrum Meeting 2 - In-Person | Working on assigned tasks | Working on assigned tasks | Working on assigned tasks | Scrum Meeting 3 - Online | Working on assigned tasks | Working on assigned tasks | Scrum Meeting 4 - In-Person | Finishing touches and submission of Sprint 3 |
 
-### Sprint 4 (August 1, 2023 – August 9, 2023) schedule: TBA
+### Sprint 4 (August 1, 2023 – August 9, 2023) schedule:
+
+| Sprint 4 / Dates | August 1, 2023 | August 2, 2023 | August 3, 2023 | August 4, 2023 | August 5, 2023 | August 6, 2023 | August 7, 2023 | August 8, 2023 | August 9, 2023 |
+|:----------------:|:------------:|:------------:|:------------:|:------------:|:------------:|:-------------:|:------------:|:------------:|:------------:|
+| | Review Sprint 4 Guidelines and Rubrics | Scrum Meeting 1 - Online | Working on assigned tasks | Working on assigned tasks | Working on assigned tasks | Scrum Meeting 2 - In-Person | Working on assigned tasks | Working on assigned tasks | Finishing touches and submission of Sprint 4 & Presentation |
 
 ## Project Technologies
 The system will be deployed on an AWS EC2 instance or localhost. The database for the application will be hosted on an AWS RDS (Relational Database Service). To facilitate communication between the Docker containers and the host environment, we will utilize port mapping with the application's services exposed on port 8000. This architecture allows for a scalable and reliable deployment of the web app, leveraging the infrastructure and services provided by AWS. The EC2 instance handles the web server functionality, while the RDS database ensures efficient storage and retrieval of data for the application.
