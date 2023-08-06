@@ -114,11 +114,13 @@ def review_candidate(jp_id,jp_username):
 	print("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
 	cursor.execute("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
 	db.commit()
+
 	alert = "There has been an update in your job application with JobID " +str(jp_id) +" Current Status -> Review"
 	query = "insert into notifications (username,alert,seen) values (%s,%s,%s) ;"
 	values = (jp_username, alert, 0)
 	cursor.execute(query,values)
 	db.commit()
+
 	return render_template('resume.html',username=jp_username, session=session)
 
 
@@ -128,11 +130,13 @@ def approve_candidate(jp_id,jp_username,jobid):
 	cursor = db.cursor()
 	cursor.execute("update job_applied set status='Approved' where applied_job_id="+jp_id+ " ;")
 	db.commit()
+
 	alert = "There has been an update in your job application with JobID " +str(jp_id) +" Current Status -> Approved"
 	query = "insert into notifications (username,alert,seen) values (%s,%s,%s) ;"
 	values = (jp_username, alert, 0)
 	cursor.execute(query,values)
 	db.commit()
+
 	return redirect('/review-jobs/'+jobid, code=307)
 
 
@@ -143,14 +147,13 @@ def decline_candidate(jp_id,jp_username,jobid):
 	cursor = db.cursor()
 	cursor.execute("update job_applied set status='Declined' where applied_job_id="+jp_id+ " ;")
 	db.commit()
+
 	alert = "There has been an update in your job application with JobID " +str(jp_id) +" Current Status -> Declined"
 	query = "insert into notifications (username,alert,seen) values (%s,%s,%s) ;"
 	values = (jp_username, alert, 0)
 	cursor.execute(query,values)
 	db.commit()
 	return redirect('/review-jobs/'+jobid, code=307)
-
-
 
 
 @job_blueprint.route('/add-activity', methods=['GET'])

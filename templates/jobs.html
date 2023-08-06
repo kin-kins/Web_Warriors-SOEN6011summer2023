@@ -20,6 +20,7 @@
 					<th>Company Name</th>
 					<th>Job ID</th>
 					<th>Job Description</th>
+					<th>Skill Sets</th>
 					<th>Company Address</th>
 					<th>Salary</th>
 					<th>Apply</th>
@@ -31,6 +32,7 @@
 					<td>{{ item.name }}</td>
 					<td>{{ item.jobid }}</td>
 					<td>{{ item.description }}</td>
+					<td>{{ item.skill }}</td>
 					<td>{{ item.address }}</td>
 					<td>{{ item.salary }}</td>
 
@@ -43,13 +45,14 @@
 			</tbody>
 		</table>
 		{% endif %}
-		{% if session.is_admin == 2 %}
+		{% if session.is_admin == 1 %}
 		<table class="responsive-table centered">
 			<thead>
 				<tr>
 					<th>Company Name</th>
 					<th>Job ID</th>
 					<th>Job Description</th>
+					<th>Skill Sets</th>
 					<th>Company Address</th>
 					<th>Salary</th>
 					<th>Review</th>
@@ -62,6 +65,7 @@
 					<td>{{ item.name }}</td>
 					<td>{{ item.jobid }}</td>
 					<td>{{ item.description }}</td>
+					<td>{{ item.skill }}</td>
 					<td>{{ item.address }}</td>
 					<td>{{ item.salary }}</td>
 
@@ -79,6 +83,44 @@
 		</table>
 		{% endif %}
 		{% if session.is_admin == 2 %}
+		<table class="responsive-table centered">
+			<thead>
+				<tr>
+					<th>Company Name</th>
+					<th>Job ID</th>
+					<th>Job Description</th>
+					<th>Skill Sets</th>
+					<th>Company Address</th>
+					<th>Salary</th>
+					<th>Review</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in items %}
+				<tr>
+					<td>{{ item.name }}</td>
+					<td>{{ item.jobid }}</td>
+					<td>{{ item.description }}</td>
+					<td>{{ item.skill }}</td>
+					<td>{{ item.address }}</td>
+					<td>{{ item.salary }}</td>
+
+					<form action="/review-jobs/{{ item.jobid }}" method="POST">
+					<td><button class="btn waves-effect waves-light" type="submit" name="action"><i class="material-icons">play_arrow</i></td>
+					<input type="hidden" name="is_reserved" value="{% if item.timeslots %}1{% else %}0{% endif %}">
+					</form>
+					<form action="/delete-jobs/{{ item.jobid }}" method="POST">
+						<td><button class="btn waves-effect waves-light" type="submit" name="action"><i class="material-icons">delete</i></td>
+						<input type="hidden" name="is_reserved" value="{% if item.timeslots %}1{% else %}0{% endif %}">
+						</form>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
+		{% if session.is_admin == 2 %}
+
 			<form action="/add-activity" method = "get"style="
 				display: flex;
 				align-items: center;

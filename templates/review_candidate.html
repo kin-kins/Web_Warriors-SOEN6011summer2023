@@ -22,6 +22,8 @@
 					<th>Review</th>
 					<th>Approve</th>
 					<th>Decline</th>
+					<th>Status</th>
+					
 				</tr>
 			</thead>
 			<tbody>
@@ -29,19 +31,21 @@
 				<tr>
 					<td>{{ item.username }}</td>
 					<td>{{ item.description }}</td>
-					<form action="/review-candidate/{{ item.username }}" method="POST">
+					<form action="/review-candidate/{{ item.keyid }}/{{item.username}}" method="POST">
 					<td><button class="btn waves-effect waves-light" type="submit" name="action"><i class="material-icons">play_arrow</i></td>
 					<input type="hidden" name="is_reserved" value="{% if item.timeslots %}1{% else %}0{% endif %}">
 					</form>
-					<form action="/delete-jobs/{{ item.jobid }}" method="POST">
+					<form action="/approve-candidate/{{ item.keyid }}/{{item.username}}/{{item.id}}" method="POST">
 						<td><button class="btn waves-effect waves-light" type="submit" name="action"><i class="material-icons ">check</i></td>
 						<input type="hidden" name="is_reserved" value="{% if item.timeslots %}1{% else %}0{% endif %}">
 						</form>
 		
-					<form action="/delete-jobs/{{ item.jobid }}" method="POST">
-						<td><button class="btn waves-effect waves-light" type="submit" name="action"><i class="material-icons large red-text">close</i></td>
+					<form action="/decline-candidate/{{ item.keyid }}/{{item.username}}/{{item.id}}" method="POST">
+						<td><button class="btn waves-effect waves-dark" type="submit" name="action"><i class="material-icons large red-text">close</i></td>
 						<input type="hidden" name="is_reserved" value="{% if item.timeslots %}1{% else %}0{% endif %}">
 						</form>
+
+					<td>{{ item.status }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>

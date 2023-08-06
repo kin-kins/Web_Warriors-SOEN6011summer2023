@@ -93,6 +93,18 @@ def delete_user(username):
 
 	return redirect(url_for('home'))
 
+@app.route('/notifications')
+def notifications():
+	db = Database().db
+	cursor = db.cursor()
+	cursor.execute(f"select * from notifications where username= '{session['username']}' and seen=0;")
+	db.commit()
+	item = [dict(keyid=row[0],alert = row[2]) for row in cursor.fetchall()] 
+	# cursor.execute("update user set is_admin=1 where username='" + username + "';")
+	cursor.execute(f"update notifications set seen=1 where username= '{session['username']}' and seen=0;")
+	db.commit()
+	return render_template('notifications.html',session=session,items=item)
+
 # Suspend user from admin panel
 @app.route('/suspend-user/<username>')
 def suspend_user(username):
@@ -118,6 +130,37 @@ def make_admin(username):
 	db.commit()
 
 	return redirect(url_for('home'))
+
+
+
+@app.route('/review-candidate/<jp_id>/<jp_username>', methods=['POST'])
+def review_candidate(jp_id,jp_username):
+	db = Database().db
+	cursor = db.cursor()
+	print("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
+	cursor.execute("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	return render_template('resume.html',username=jp_username, session=session)
+
+
+@app.route('/approve-candidate/<jp_id>/<jp_username>/<jobid>', methods=['POST'])
+def approve_candidate(jp_id,jp_username,jobid):
+	db = Database().db
+	cursor = db.cursor()
+	cursor.execute("update job_applied set status='Approved' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	return redirect('/review-jobs/'+jobid, code=307)
+
+
+
+@app.route('/decline-candidate/<jp_id>/<jp_username>/<jobid>', methods=['POST'])
+def decline_candidate(jp_id,jp_username,jobid):
+	db = Database().db
+	cursor = db.cursor()
+	cursor.execute("update job_applied set status='Declined' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	return redirect('/review-jobs/'+jobid, code=307)
+
 
 
 #####################################################################
