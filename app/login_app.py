@@ -150,7 +150,7 @@ async def update_user():
 	state=request.form['register_state']
 	country=request.form['register_country']
 	zipcode=request.form['register_zip']
-	customer_ob = Customer(name, "","", email, firstname, lastname, street, city, state, country, zipcode)
+	customer_ob = Customer(name, "","", email, firstname, lastname, street, city, state, country, zipcode,session["is_admin"])
 
 	# Get Address ID
 	db = Database().db
