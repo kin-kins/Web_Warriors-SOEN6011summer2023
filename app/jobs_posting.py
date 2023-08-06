@@ -13,7 +13,7 @@ def get_jp_data():
 		# "select trip_id from trip natural join user where trip.is_booked=false and user.username='" + session['username'] + "';"
 	else:
 		cursor.execute("select * from job_posting;")
-	jp = [dict(jobid = row[0],name=row[1], description=row[2], address=row[3],salary=row[4]) for row in cursor.fetchall()]
+	jp = [dict(jobid = row[0],name=row[1], description=row[2], address=row[3],salary=row[4],skill=row[5]) for row in cursor.fetchall()]
 	return jp
 
 #####################################################################
@@ -24,6 +24,21 @@ def get_jobs_applied():
 	# return "select activity_date, activity_name, cost, activity_start_time, activity_end_time, activity_id from activity natural join trip where username = '" + session['username'] + "' and is_booked = false;"
 	return "select * from job_applied where username = '" + session['username'] + "';"
  
+def match_skill_sets(list1, list2):
+    # Convert both lists to lowercase to ignore case
+    list1_lower = [s.lower().strip() for s in list1]
+    list2_lower = [s.lower().strip() for s in list2]
+
+    # Calculate the total number of strings in both lists
+    total_strings = len(list1_lower) + len(list2_lower)
+
+    # Calculate the number of matching strings
+    matching_strings = len(set(list1_lower) & set(list2_lower))
+
+    # Calculate the match percentage
+    match_percentage = int((matching_strings / total_strings) * 100)
+
+    return match_percentage
 
 
 # Shows all available attractions.
@@ -37,12 +52,23 @@ def attractions():
 def add_to_trip(jp_index):
 	cursor = db.cursor()
 	cursor.execute("select * from job_posting;")
-	jp = [dict(id = row[0], name=row[1], description=row[2],address= row[3],salary=row[4]) for row in cursor.fetchall()] # TODO: Correctly map activity info.
+	jp = [dict(id = row[0], name=row[1], description=row[2],address= row[3],salary=row[4],skills=row[5]) for row in cursor.fetchall()] # TODO: Correctly map activity info.
 	jobid = jp[int(jp_index) - 1]['id']
 	description = jp[int(jp_index) - 1]['description']
 	name = jp[int(jp_index) - 1]['name']
 	price = jp[int(jp_index) - 1]['salary']
 	address = jp[int(jp_index) - 1]['address']
+	required_skill = jp[int(jp_index) - 1]['skills'].split(",")
+
+	query = """SELECT * from skills
+            WHERE username = '{}'""".format(session["username"])
+	cursor.execute(query)
+	data = cursor.fetchone()
+	applicant_skill =  data[1].split(",")
+	match_percentage = match_skill_sets(required_skill,applicant_skill)
+	if int(match_percentage)<50:
+		return render_template('error_apply.html', session=session,data=match_percentage)
+
 	values = (jobid,name,description,price,address, session['username'])
 	query_trip_common = "INSERT IGNORE INTO job_applied ( job_id, company_name ,description,salary,address, username) VALUES (%s, %s, %s, %s, %s,%s)"
 	print(query_trip_common,values)
@@ -76,14 +102,54 @@ def review_jobs(jp_index):
 	cursor = db.cursor()
 	cursor.execute("select * from job_applied where job_id= " + jp_index + ";")
 	db.commit()
-	jp = [dict(id = row[1], name=row[2], description=row[3],address= row[4],salary=row[5],username= row[6]) for row in cursor.fetchall()] # TODO: Correctly map activity info.
+	jp = [dict(keyid=row[0],id = row[1], name=row[2], description=row[3],address= row[4],salary=row[5],username= row[6],status=row[7]) for row in cursor.fetchall()] # TODO: Correctly map activity info.
 	
 	return render_template('review_candidate.html',items=jp,jobid=jp_index, session=session)
 
 
-@job_blueprint.route('/review-candidate/<jp_username>', methods=['POST'])
-def review_candidate(jp_username):
+@job_blueprint.route('/review-candidate/<jp_id>/<jp_username>', methods=['POST'])
+def review_candidate(jp_id,jp_username):
+	db = Database().db
+	cursor = db.cursor()
+	print("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
+	cursor.execute("update job_applied set status='Review' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	alert = "There has been an update in your job application with JobID " +str(jp_id) +" Current Status -> Review"
+	query = "insert into notifications (username,alert,seen) values (%s,%s,%s) ;"
+	values = (jp_username, alert, 0)
+	cursor.execute(query,values)
+	db.commit()
 	return render_template('resume.html',username=jp_username, session=session)
+
+
+@job_blueprint.route('/approve-candidate/<jp_id>/<jp_username>/<jobid>', methods=['POST'])
+def approve_candidate(jp_id,jp_username,jobid):
+	db = Database().db
+	cursor = db.cursor()
+	cursor.execute("update job_applied set status='Approved' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	alert = "There has been an update in your job application with JobID " +str(jp_id) +" Current Status -> Approved"
+	query = "insert into notifications (username,alert,seen) values (%s,%s,%s) ;"
+	values = (jp_username, alert, 0)
+	cursor.execute(query,values)
+	db.commit()
+	return redirect('/review-jobs/'+jobid, code=307)
+
+
+
+@job_blueprint.route('/decline-candidate/<jp_id>/<jp_username>/<jobid>', methods=['POST'])
+def decline_candidate(jp_id,jp_username,jobid):
+	db = Database().db
+	cursor = db.cursor()
+	cursor.execute("update job_applied set status='Declined' where applied_job_id="+jp_id+ " ;")
+	db.commit()
+	alert = "There has been an update in your job application with JobID " +str(jp_id) +" Current Status -> Declined"
+	query = "insert into notifications (username,alert,seen) values (%s,%s,%s) ;"
+	values = (jp_username, alert, 0)
+	cursor.execute(query,values)
+	db.commit()
+	return redirect('/review-jobs/'+jobid, code=307)
+
 
 
 
@@ -99,7 +165,8 @@ def create_activitys():
 		activity_desc = request.form['activity_desc']
 		activity_address = request.form['activity_address']
 		price = request.form['price']
-		activity_object = Activity(activity_name, activity_desc, activity_address,price)
+		skill = request.form['skill']
+		activity_object = Activity(activity_name, activity_desc, activity_address,price,skill)
 		activity_object.save()
 		return redirect('/jobs')
 	return redirect('/jobs')

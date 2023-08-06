@@ -22,6 +22,19 @@ ALLOWED_EXTENSIONS = set(['pdf'])
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+@resume_blueprint.route('/edit-user/<username>')
+def edit_user(username):
+    db = Database().db
+    cursor = db.cursor()
+    query = """SELECT u.username, u.email, u.is_admin, u.first_name, u.last_name, u.suspended,
+            a.street_no, a.street_name, a.city, a.state, a.country, a.zip
+            FROM user u
+            JOIN address a ON u.address_id = a.address_id
+            WHERE u.username = '{}'""".format(username)
+    cursor.execute(query)
+    data = cursor.fetchone()
+    return render_template('edit-user.html', param=username, data=data)
+
 
 @resume_blueprint.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -51,5 +64,29 @@ db = Database().db
 # Shows all available attractions.
 @resume_blueprint.route('/resume')
 def view_resume():
-	return render_template('resume.html', session=session)
+    db = Database().db
+    cursor = db.cursor()
+    query = """SELECT * from skills
+            WHERE username = '{}'""".format(session["username"])
+    cursor.execute(query)
+    data = cursor.fetchone()
+    return render_template('resume.html', session=session,data=data)
 
+
+@resume_blueprint.route('/update-skill', methods=['POST'])
+def update_skills():
+    db = Database().db
+    cursor = db.cursor()
+    username = session["username"]
+    skill=request.form['skill']
+    firstname=request.form['register_firstname']
+    lastname=request.form['register_lastname']
+    email=request.form['register_email']
+
+    query1= "INSERT INTO skills (username, skills,first_name,last_name,email_address) VALUES (%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE skills = %s"
+    query = """insert
+            WHERE username = '{}'""".format(session["username"])
+    values = (username,skill,firstname,lastname,email,skill)
+    cursor.execute(query1,values)
+    db.commit()
+    return redirect("/resume")
